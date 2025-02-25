@@ -19,5 +19,15 @@ export class BicycleParkingService {
       return [];
     }
   }
- 
+
+  async sendLogin(cred: any){
+    const response = await fetch("http://localhost:3000/login", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(cred),
+    });
+    console.log(response.json)
+  }
 }

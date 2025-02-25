@@ -5,6 +5,7 @@ const osmService = require('./services/osm');
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 
 // Get details from Velopark
 app.get('/api/details/velopark', async (req, res) => {
@@ -24,6 +25,18 @@ app.get('/api/details/all', async (req, res) => {
   const osmDetails = await osmService.getOsmBicycleParking();
   const allDetails = [...veloparkDetails, ...osmDetails];
   res.json(allDetails);
+});
+
+app.post('/login', async (req, res) => {
+ const user = {
+  name: req.body.username
+ }
+ if(user.name == "Gilles"){
+  res.status(200).json({message: "Login succes"})
+ } else {
+  res.status(401).json({message: "Login fout"})
+ }
+ res.end();
 });
 
 const PORT = 3000;
