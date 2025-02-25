@@ -25,7 +25,9 @@ export class AppComponent {
 
   locationsFiltered1()
   {
-    console.log( this.service.getDetailsFiltered(true, true, 10));
-    this.locationsFiltered = this.service.getDetailsFiltered(true, true, 10);
+    // console.log( this.service.getDetailsFiltered(true, true, 10));
+    // this.locationsFiltered = this.service.getDetailsFiltered(true, true, 10);
+    console.log("aaaaaaaa")
+    this.service.triggerMapUpdate();
   }
 }
