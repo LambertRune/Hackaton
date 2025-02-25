@@ -6,7 +6,10 @@ import { BicycleParkingService } from '../service/bicycleparkingService';
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
-})
+  }
+  
+  
+)
 export class MapComponent implements AfterViewInit {
   private map: any;
   private bicycleParkingService: BicycleParkingService;
@@ -27,19 +30,18 @@ export class MapComponent implements AfterViewInit {
     });
     tiles.addTo(this.map);
   }
+  private markers: L.Marker[] = [];
 
-  private async loadData(): Promise<void> {
-    
-    const data = await this.bicycleParkingService.getDetailsFiltered();
-    const customIcon = L.icon({
-    iconUrl:'assets/bikePicture.svg',  
-    iconSize: [60, 60],                   // Icon size
-      iconAnchor: [16, 32],                 // Position of the icon relative to marker
-      popupAnchor: [0, -32]                 // Position of the popup
+  private clearMarkers(): void {
+    this.markers.forEach(marker => {
+      this.map.removeLayer(marker);
     });
-
+    this.markers = [];
+  }
+  private placeMarkers(data:any,customIcon:any):void{
+    this.clearMarkers();
     data.forEach((location: { latitude: number; longitude: number; source: any; capacity: any; isCovered: any; type: any; isFree: null; }) => {
-      L.marker([location.latitude, location.longitude], { icon: customIcon })
+      const marker = L.marker([location.latitude, location.longitude], { icon: customIcon })
         .addTo(this.map)
         .bindPopup(`
           <b>Bicycle Parking (${location.source})</b><br>
@@ -48,11 +50,44 @@ export class MapComponent implements AfterViewInit {
           ${location.type ? `Type: ${location.type}<br>` : ''}
           ${location.isFree !== null ? `Free: ${location.isFree ? 'Yes' : 'No'}` : ''}          
         `);
+        this.markers.push(marker);
+      });
+      // Store the marker reference
+      
+  }
+  private async loadData(): Promise<void> {
+    // Clear existing markers first
+    
+    
+    const data = await this.bicycleParkingService.getDetails();
+    const customIcon = L.icon({
+      iconUrl:'assets/bikePicture.svg',  
+      iconSize: [60, 60],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32]  
+      
+    
     });
+    this.placeMarkers(data,customIcon);
+  }
+  private async loadDataFiltered(): Promise<void> {
+    // Clear existing markers first
+    this.clearMarkers();
+    
+    const data = await this.bicycleParkingService.getDetailsFiltered(true, true, 10);
+    const customIcon = L.icon({
+      iconUrl:'assets/bikePicture.svg',  
+      iconSize: [60, 60],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32]  
+      
+    
+    });
+    this.placeMarkers(data,customIcon);
   }
 
   ngAfterViewInit(): void {
     this.initMap();
-    this.loadData(); // Load data and markers on map initialization
+    this.loadData(); 
   }
 }

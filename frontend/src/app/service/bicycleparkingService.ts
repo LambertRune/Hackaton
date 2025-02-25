@@ -19,9 +19,9 @@ export class BicycleParkingService {
       return [];
     }
   }
-  async getDetailsFiltered(){
+  async getDetailsFiltered(isCovered:boolean, isFree:boolean, minimumCapacity:number){
     try{
-      const response = await axios.get(this.apiUrl+'/filter/all/?isCovered=true');
+      const response = await axios.get(this.apiUrl+'/filter/all/?isCovered=true&isFree=true&minCapacity=10');	
       return response.data;
     }
     catch(error){
