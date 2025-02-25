@@ -1,40 +1,29 @@
 const express = require('express');
-const axios = require('axios');
 const cors = require('cors');
+const veloparkService = require('./services/velopark');
+const osmService = require('./services/osm');
 
 const app = express();
 app.use(cors());
 
-const BASE_API_URL = 'https://data.velopark.be/rich-snippets-generator/api/34000';
-
-// Get list of shed URLs
-app.get('/api/sheds', async (req, res) => {
-  try {
-    const response = await axios.get(BASE_API_URL);
-    const shedUrls = response.data;
-    res.json(shedUrls);
-  } catch (error) {
-    console.error('Error fetching shed URLs:', error);
-    res.status(500).send('Error fetching shed URLs');
-  }
+// Get details from Velopark
+app.get('/api/details/velopark', async (req, res) => {
+  const details = await veloparkService.getVeloparkDetails();
+  res.json(details);
 });
 
-// Get shed details for each URL
-app.get('/api/sheds/details', async (req, res) => {
-  try {
-    const response = await axios.get(BASE_API_URL);
-    const shedUrls = response.data;
-    const shedDetails = await Promise.all(
-      shedUrls.map(async (url) => {
-        const details = await axios.get(url);
-        return details.data;
-      })
-    );
-    res.json(shedDetails);
-  } catch (error) {
-    console.error('Error fetching shed details:', error);
-    res.status(500).send('Error fetching shed details');
-  }
+// Get details from OpenStreetMap
+app.get('/api/details/openstreetmap', async (req, res) => {
+  const details = await osmService.getOsmBicycleParking();
+  res.json(details);
+});
+
+// Get details from all providers
+app.get('/api/details/all', async (req, res) => {
+  const veloparkDetails = await veloparkService.getVeloparkDetails();
+  const osmDetails = await osmService.getOsmBicycleParking();
+  const allDetails = [...veloparkDetails, ...osmDetails];
+  res.json(allDetails);
 });
 
 const PORT = 3000;
