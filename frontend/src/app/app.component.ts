@@ -11,23 +11,33 @@ import { HttpClientModule } from '@angular/common/http';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-
-  title = 'frontend';
-  locationsFiltered : any;
+  
+  title = 'frontend';  
+  minCapacity: number = 0;
+  iscovered: boolean = false;
+  isfree: boolean = false;
   constructor(private service: BicycleParkingService) {
 
     
+  }
+
+  triggerMapUpdate() {
+    // Add your logic here
+    console.log("Map update triggered");
   }
 
   ngOnInit() {
  
   }
 
-  locationsFiltered1()
+  locationsFiltered1(isCovered:boolean, isFree:boolean, minimumCapacity:number)
   {
+    //this.service.triggerMapUpdate();
     // console.log( this.service.getDetailsFiltered(true, true, 10));
-    // this.locationsFiltered = this.service.getDetailsFiltered(true, true, 10);
-    console.log("aaaaaaaa")
+    this.service.getMinCapacity(minimumCapacity);
+    this.service.getDetailsFiltered(isCovered, this.isfree, minimumCapacity);
     this.service.triggerMapUpdate();
+    console.log("aaaaaaaa")
+    
   }
 }

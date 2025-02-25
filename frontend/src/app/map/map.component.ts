@@ -20,7 +20,7 @@ export class MapComponent implements AfterViewInit {
     private bicycleParkingService: BicycleParkingService) 
     { 
       this.subscription = this.bicycleParkingService.action$.subscribe(() => {
-        this.loadDataFiltered();
+        this.loadDataFiltered(true,true,0);
       });
     }
   
@@ -82,13 +82,13 @@ export class MapComponent implements AfterViewInit {
 
       this.isLoading = false;
     }
-    private async loadDataFiltered(): Promise<void> {
+    private async loadDataFiltered(isCovered:boolean,isFree:boolean,minCapacity:number): Promise<void> {
       this.isLoading = true;
 
       // Clear existing markers first
       this.clearMarkers();
       
-      const data = await this.bicycleParkingService.getDetailsFiltered(true, true, 10);
+      const data = await this.bicycleParkingService.getDetailsFiltered(true, true, 0);
       const customIcon = L.icon({
         iconUrl:'assets/bikePicture.svg',  
         iconSize: [60, 60],
