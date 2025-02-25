@@ -36,7 +36,7 @@ const formatOpenStreetMapData = (data) => {
         longitude: parseFloat(data.lon),
         capacity: data.tags.capacity ? parseInt(data.tags.capacity) : null,
         covered: data.tags.covered === "yes",
-        type: data.tags.type || null,
+        type: data.tags.bicycle_parking || null,
         isFree: data.tags.fee === "no" || null
     };
 };
