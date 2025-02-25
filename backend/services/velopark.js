@@ -26,7 +26,7 @@ const formatVeloParkData = (data) => {
         latitude: data.parkingDetails.geo[0].latitude,
         longitude: data.parkingDetails.geo[0].longitude,
         capacity: data.parkingDetails.totalCapacity || null,
-        covered: data.parkingDetails.covered || false,
+        isCovered: data.parkingDetails.covered || false,
         //   type: data.parkingDetails.allows?.[0]?.bicycleType?.split('#')[1] || null
         type: null,
         isFree: data.parkingDetails.priceSpecification?.[0]?.freeOfCharge || null
