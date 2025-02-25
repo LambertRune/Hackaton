@@ -1,5 +1,6 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, Inject } from '@angular/core';
 import * as L from 'leaflet';
+
 
 @Component({
   selector: 'app-map',
@@ -7,43 +8,51 @@ import * as L from 'leaflet';
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements AfterViewInit {
-  private map:any;
+  private map: any;
 
+  
   private initMap(): void {
     this.map = L.map('map', {
-      center: [39.8282, -98.5795], // Centered on the US
-      zoom: 4
+      center: [50.82803, 3.26487],
+      zoom: 13
     });
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
       minZoom: 3,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(this.map);
+    })
+    tiles.addTo(this.map);
   }
 
   private addMarkers(): void {
     const customIcon = L.icon({
-      iconUrl: 'assets/custom-marker.svg', // Path to your image
-      iconSize: [32, 32], // Size of the icon
-      iconAnchor: [16, 32], // Anchor point of the icon
-      popupAnchor: [0, -32] // Position of the popup
+      iconUrl: 'assets/custom-marker.svg',
+      iconSize: [32, 32],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32]
     });
-    // Example markers
-    const locations = [
-      { lat: 40.7128, lng: -74.0060, popup: "New York City" },
-      { lat: 34.0522, lng: -118.2437, popup: "Los Angeles" },
-      { lat: 41.8781, lng: -87.6298, popup: "Chicago" }
+    const testLocations = [
+      {
+        latitude: 50.8562804,
+        longitude: 3.3149583,
+        capacity: "48",
+        covered: "yes",
+        type: "wall_loops"
+      }
     ];
-
-    locations.forEach(location => {
-      // Add the marker with custom icon
-      L.marker([location.lat, location.lng], { icon: customIcon })
-      .addTo(this.map)
-      .bindPopup(location.popup);
-
+    testLocations.forEach(location => {
+      L.marker([location.latitude, location.longitude])
+        .addTo(this.map)
+        .bindPopup(`
+          <b>Bicycle Parking</b><br>
+          Capacity: ${location.capacity}<br>
+          Covered: ${location.covered}<br>
+          Type: ${location.type}
+        `);
     });
   }
+
   ngAfterViewInit(): void {
     this.initMap();
     this.addMarkers();
