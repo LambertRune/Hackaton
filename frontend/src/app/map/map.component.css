@@ -28,4 +28,5 @@
   z-index: 1000; /* Ensure it appears above the map */
   font-size: 20px;
   font-weight: bold;
+  border: 1px solid #999;
 }
