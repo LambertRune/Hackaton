@@ -29,7 +29,9 @@ export class AppComponent {
   ngOnInit() {
  
   }
-
+  addroute(){
+    this.addroute();
+  }
   locationsFiltered1(isCovered:boolean, isFree:boolean, minimumCapacity:number)
   {
     //this.service.triggerMapUpdate();
