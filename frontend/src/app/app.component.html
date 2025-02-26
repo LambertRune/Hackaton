@@ -51,7 +51,7 @@
         <input type="checkbox" id="isFree" #isFreeRef><br>
         <label for="isCovered">is covered</label>
         <input type="checkbox" id="isCovered" #isCoveredRef><br>
-        
+        <input type="button" (click)="addroute()" placeholder="route maken">
         <button (click)="locationsFiltered1(iscovered, isfree, +minCapacityRef.value)" 
                 class="btn btn-primary btn-lg mt-3">
             Zoek een parkeerplek
