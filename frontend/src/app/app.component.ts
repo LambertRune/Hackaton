@@ -34,9 +34,8 @@ export class AppComponent {
   {
     //this.service.triggerMapUpdate();
     // console.log( this.service.getDetailsFiltered(true, true, 10));
-    this.service.getMinCapacity(minimumCapacity);
-    this.service.getDetailsFiltered(isCovered, this.isfree, minimumCapacity);
-    this.service.triggerMapUpdate();
+    //this.service.getDetailsFiltered(isCovered, this.isfree, minimumCapacity);
+    this.service.triggerMapUpdate({isCovered:isCovered, isFree:isFree, minimumCapacity:minimumCapacity});
     console.log("aaaaaaaa")
     
   }

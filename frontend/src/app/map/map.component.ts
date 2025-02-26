@@ -19,8 +19,9 @@ export class MapComponent implements AfterViewInit {
   constructor(
     private bicycleParkingService: BicycleParkingService) 
     { 
-      this.subscription = this.bicycleParkingService.action$.subscribe(() => {
-        this.loadDataFiltered(true,true,0);
+      this.subscription = this.bicycleParkingService.action$.subscribe((obj:any) => {
+        console.log(obj);
+        this.loadDataFiltered(obj.isCovered,obj.isfree,obj.minimumCapacity);
       });
     }
   
@@ -88,7 +89,7 @@ export class MapComponent implements AfterViewInit {
       // Clear existing markers first
       this.clearMarkers();
       
-      const data = await this.bicycleParkingService.getDetailsFiltered(true, true, 0);
+      const data = await this.bicycleParkingService.getDetailsFiltered(true, true, minCapacity);
       const customIcon = L.icon({
         iconUrl:'assets/bikePicture.svg',  
         iconSize: [60, 60],

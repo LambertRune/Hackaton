@@ -6,11 +6,21 @@
     <div class="container text-center mt-5">
         <h1 class="text-primary">Welkom bij ParkMyBike</h1>
         <p class="lead">Vind eenvoudig een veilige plek om je fiets te parkeren!</p>
-        <br>
-        <label for="minCapacity">minimum capaciteit</label>
-        <input type="range" min="1" max="500" id="minCapacity">
-        <button (click)="locationsFiltered1(true, false, minCapacity)" class="btn btn-primary btn-lg mt-3" >Zoek een parkeerplek</button>
+        <br>     
+        <input type="button" onclick="filter" >//deze button laat een pop up toe om te filteren   
+        <label for="minCapacity">Minimum capacity</label>
+        <input type="range" min="1" max="500" id="minCapacity" #minCapacityRef><br>
+        <label for="isFree">is free</label>
+        <input type="checkbox" id="isFree" #isFreeRef><br>
+        <label for="isCovered">is covered</label>
+        <input type="checkbox" id="isCovered" #isCoveredRef><br>
+        
+        <button (click)="locationsFiltered1(iscovered, isfree, +minCapacityRef.value)" 
+                class="btn btn-primary btn-lg mt-3">
+            Zoek een parkeerplek
+        </button>
     </div>
+    
     <div class="p-2">
         <app-map></app-map>
     </div>
