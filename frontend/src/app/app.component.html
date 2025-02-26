@@ -1,9 +1,22 @@
 <body class="bg-gray-100 text-gray-900">
     <div class="header">
         <p>🚴‍♂️ ParkMyBike - Jouw Fiets, Jouw Plek! 🚲</p>
-        <button routerLink="Login" class="link btn btn-primary btn-lg mt-3" routerLinkActive="active" ariaCurrentWhenActive="page">Login</button>
-        <button routerLink="Map" class="link btn btn-primary btn-lg mt-3" routerLinkActive="active" ariaCurrentWhenActive="page">Map</button>
+        
     </div>
+    <!-- Navigatiebalk -->
+  <nav class="navbar">
+    <div class="navbar-logo">
+      <!-- Vervang door eigen logo/icoon -->
+      <img src="/assets/logo.png" alt="Fietsenstalling logo" />
+    </div>
+    <ul class="navbar-menu">
+      <li><a routerLink="Login" routerLinkActive="active" ariaCurrentWhenActive="page">Login</a></li>
+      <li><a routerLink="Map" routerLinkActive="active" ariaCurrentWhenActive="page">Map</a></li>
+      <li><a  href="#">Over ons</a></li>
+      <li><a  href="#">Community</a></li>
+      <li><a  href="#">Contact</a></li>
+    </ul>
+  </nav>
     <router-outlet></router-outlet>    
     <div class="footer">&copy; 2025 ParkMyBike. Alle rechten voorbehouden.</div>
 
