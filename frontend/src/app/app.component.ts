@@ -1,24 +1,23 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { MapComponent } from "./map/map.component";
 import { HttpClientModule } from '@angular/common/http';
 import { BicycleParkingService } from './service/bicycleparkingService';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MapComponent],
+  imports: [RouterOutlet, MapComponent, RouterLink, RouterLinkActive],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'frontend';
   private bicycleParkingService: BicycleParkingService;
-  
+  private router: Router;
     constructor() {
+      this.router = new Router();
       this.bicycleParkingService = new BicycleParkingService();
-    }
-    loginPage() {
-      
     }
   login(NaamUser: string) {
     cred = {
