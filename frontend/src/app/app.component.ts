@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { MapComponent } from "./map/map.component";
+import { BicycleParkingService } from "./service/bicycleparkingService";
 import { HttpClientModule } from '@angular/common/http';
-import { BicycleParkingService } from './service/bicycleparkingService';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, MapComponent, RouterLink, RouterLinkActive],
+
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

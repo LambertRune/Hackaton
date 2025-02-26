@@ -39,6 +39,59 @@ app.post('/login', async (req, res) => {
  res.end();
 });
 
+
+app.get('/api/filter/all', async (req, res) => {
+    // Access query parameters
+    const filterIsCovered = Boolean(req.query.isCovered);
+    const filterIsFree = Boolean(req.query.isFree);
+    const filterType = req.query.type || false;
+    const filterMinCapacity = req.query.minCapacity || false;
+
+    const veloparkDetails = await veloparkService.getVeloparkDetails();
+    const osmDetails = await osmService.getOsmBicycleParking();
+    const allDetails = [...veloparkDetails, ...osmDetails];
+
+    const output = allDetails.filter(a => {
+        if (filterIsCovered && !a.isCovered) {return false;}
+        if (filterIsFree && !a.isFree) {return false;}
+        if (filterType && a.type !== filterType) {return false;}
+        if (filterMinCapacity && a.capacity < parseInt(filterMinCapacity)) {return false;}
+        return true; // All checks pass
+    });
+
+    res.json(output);
+});
+
+// app.get('/api/filter/:provider', async (req, res) => {
+//     const { provider } = req.params;
+//     const filters = req.query;
+
+//     let data = [];
+//     if (provider === 'openstreetmap' || provider === 'all') {
+//         data = data.concat(await osmService.getOsmBicycleParking());
+//     }
+//     if (provider === 'velopark' || provider === 'all') {
+//         data = data.concat(await veloparkService.getVeloparkDetails());
+//     }
+
+//     // Apply filters
+//     const filteredData = data.filter(item => {
+//         return Object.entries(filters).every(([key, value]) => {
+//             if (key === 'isCovered' || key === 'isFree') {
+//                 return item[key] === (value === 'true');
+//             }
+//             if (key === 'minCapacity') {
+//                 return item[key] !== null && parseInt(item[key]) >= parseInt(value);
+//             }
+//             return item[key]?.toString() === value;
+            
+//         });
+//     });
+
+//     res.json(filteredData);
+// });
+
+
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
