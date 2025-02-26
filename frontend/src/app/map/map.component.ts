@@ -18,22 +18,32 @@ export class MapComponent {
   private subscription: Subscription;
   private subscription2: Subscription;
   public isLoading: boolean;
+  title = 'frontend';  
+  minCapacity: number = 0;
+  iscovered: boolean = false;
+  isfree: boolean = false;
 
-  constructor(
-    private bicycleParkingService: BicycleParkingService) 
-    { 
+  constructor(private service: BicycleParkingService) {
       this.isLoading = false;
-      this.subscription = this.bicycleParkingService.action$.subscribe((obj:any) => {
+      this.subscription = this.service.action$.subscribe((obj:any) => {
         console.log(obj);
         this.loadDataFiltered(obj.isCovered,obj.isfree,obj.minimumCapacity);
       });
-      this.subscription2 = this.bicycleParkingService.action2$.subscribe((obj:any) => {
+      this.subscription2 = this.service.action2$.subscribe((obj:any) => {
         this.addroute(obj.latitude,obj.longitude);
       });
       window.addEventListener('addRoute', ((e: any) => {
         const { lat, lng } = e.detail;
         this.addroute(lat, lng);
       }) as EventListener);
+    }
+    triggerMapUpdate() {
+      // Add your logic here
+      console.log("Map update triggered");
+    }
+    locationsFiltered1(isCovered:boolean, isFree:boolean, minimumCapacity:number)
+    {    
+      this.service.triggerMapUpdate({isCovered:isCovered, isFree:isFree, minimumCapacity:minimumCapacity});
     }
   
 
@@ -101,8 +111,8 @@ export class MapComponent {
           popupAnchor: [0, -60]
         });
 
-        L.marker([currentLocation.lat, currentLocation.lng], { icon: fromIcon }).addTo(this.map);
-        L.marker([latitude, longitude], { icon: toIcon }).addTo(this.map);
+        //L.marker([currentLocation.lat, currentLocation.lng], { icon: fromIcon }).addTo(this.map);
+        //L.marker([latitude, longitude], { icon: toIcon }).addTo(this.map);
 
         L.Routing.control({
           waypoints: [
@@ -121,7 +131,7 @@ export class MapComponent {
       // Clear existing markers first
       this.clearMarkers()
       
-      const data = await this.bicycleParkingService.getDetails();
+      const data = await this.service.getDetails();
       const customIcon = L.icon({
         iconUrl:'assets/bikePicture.svg',  
         iconSize: [60, 60],
@@ -140,7 +150,7 @@ export class MapComponent {
       // Clear existing markers first
       this.clearMarkers();
       
-      const data = await this.bicycleParkingService.getDetailsFiltered(true, true, minCapacity);
+      const data = await this.service.getDetailsFiltered(true, true, minCapacity);
       const customIcon = L.icon({
         iconUrl:'assets/bikePicture.svg',  
         iconSize: [60, 60],
