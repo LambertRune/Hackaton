@@ -1,5 +1,7 @@
 import { Component, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
+import 'leaflet-routing-machine';
+
 import { BicycleParkingService } from '../service/bicycleparkingService';
 import { Subscription } from 'rxjs';
 
@@ -55,16 +57,25 @@ export class MapComponent {
       const marker = L.marker([location.latitude, location.longitude], { icon: customIcon })
       .addTo(this.map)
       .bindPopup(`
-          <b>Bicycle Parking (${location.source})</b><br>
-          ${location.capacity ? `Capacity: ${location.capacity}<br>` : ''}
-          Covered: ${location.isCovered ? 'Yes' : 'No'}<br>
-          ${location.type ? `Type: ${location.type}<br>` : ''}
-          ${location.isFree !== null ? `Free: ${location.isFree ? 'Yes' : 'No'}` : ''}          
-        `);
-        this.markers.push(marker);
+        <b>Bicycle Parking (${location.source})</b><br>
+        ${location.capacity ? `Capacity: ${location.capacity}<br>` : ''}
+        Covered: ${location.isCovered ? 'Yes' : 'No'}<br>
+        ${location.type ? `Type: ${location.type}<br>` : ''}
+        ${location.isFree !== null ? `Free: ${location.isFree ? 'Yes' : 'No'}<br>` : ''}
+        <a href="https://www.google.com/maps/dir/?api=1&destination=${location.latitude},${location.longitude}&travelmode=bicycling" target="_blank">Open google maps</a>
+      `);
+      this.markers.push(marker);
       });
       // Store the marker reference
       
+    }
+    private addroute():void{
+      L.Routing.control({
+        waypoints: [
+          L.latLng(57.74, 11.94),
+          L.latLng(57.6792, 11.949)
+        ]
+      }).addTo(this.map);
     }
     private async loadData(): Promise<void> {
       this.isLoading = true;
