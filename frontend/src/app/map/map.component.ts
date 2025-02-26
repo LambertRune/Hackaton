@@ -71,10 +71,10 @@ export class MapComponent {
         ${location.type ? `Type: ${location.type}<br>` : ''}
         ${location.isFree !== null ? `Free: ${location.isFree ? 'Yes' : 'No'}<br>` : ''}
         <a href="https://www.google.com/maps/dir/?api=1&destination=${location.latitude},${location.longitude}&travelmode=bicycling" target="_blank">Open google maps</a>
-        
+        <br>
         <button onclick="window.dispatchEvent(new CustomEvent('addRoute', 
           { detail: { lat: ${location.latitude}, lng: ${location.longitude} } }))">
-          Route
+          Route to here
         </button>
       `);
       this.markers.push(marker);
