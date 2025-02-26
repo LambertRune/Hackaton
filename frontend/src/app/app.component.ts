@@ -11,16 +11,19 @@ import { HttpClientModule } from '@angular/common/http';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  
+  isFiltersVisible = false; // Om de zichtbaarheid van de filters te beheren
+
   title = 'frontend';  
   minCapacity: number = 0;
   iscovered: boolean = false;
-  isfree: boolean = false;
+  isfree: boolean = false;  
   constructor(private service: BicycleParkingService) {
 
     
   }
-
+  toggleFilters() {
+    this.isFiltersVisible = !this.isFiltersVisible;
+  }
   triggerMapUpdate() {
     // Add your logic here
     console.log("Map update triggered");

@@ -6,10 +6,9 @@
     <div class="container text-center mt-5">
         <h1 class="text-primary">Welkom bij ParkMyBike</h1>
         <p class="lead">Vind eenvoudig een veilige plek om je fiets te parkeren!</p>
-        <br>     
-        <input type="button" onclick="filter" >//deze button laat een pop up toe om te filteren   
-        <label for="minCapacity">Minimum capacity</label>
-        <input type="range" min="1" max="500" id="minCapacity" #minCapacityRef><br>
+        <br>       
+        <label for="minCapacity">Minimum capacity:</label>
+        <input type="number" placeholder="1" min="1" max="500" id="minCapacity" #minCapacityRef><br>
         <label for="isFree">is free</label>
         <input type="checkbox" id="isFree" #isFreeRef><br>
         <label for="isCovered">is covered</label>
