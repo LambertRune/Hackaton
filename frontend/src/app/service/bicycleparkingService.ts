@@ -10,10 +10,15 @@ import axios from 'axios';
 export class BicycleParkingService {
   private apiUrl = 'http://localhost:3000/api'; // Adjust port as needed
   private actionSignalUpdate = new Subject<void>();
+  private actionSignalRouteUpdate = new Subject<void>();
+  action2$ = this.actionSignalRouteUpdate.asObservable();
   action$ = this.actionSignalUpdate.asObservable();
 
   triggerMapUpdate(obj: any) {
     this.actionSignalUpdate.next(obj);
+  }
+  triggerRouteUpdate(obj:any) {
+    this.actionSignalRouteUpdate.next(obj);
   }
   
   
