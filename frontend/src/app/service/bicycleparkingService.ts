@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, numberAttribute } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import axios from 'axios';
@@ -15,11 +15,18 @@ export class BicycleParkingService {
   triggerMapUpdate() {
     this.actionSignalUpdate.next();
   }
-
-
+  private minCapacity: number = 0;
+  public async getMinCapacity(minCapacity:number){
+    this.minCapacity = minCapacity
+    
+  }
+  public async setminCapacity(){
+    return this.minCapacity
+  }
   public async getDetails(){
     try{
       const response = await axios.get(this.apiUrl+'/details/all');
+      
       return response.data;
     }
     catch(error){
@@ -29,7 +36,9 @@ export class BicycleParkingService {
   }
   public async getDetailsFiltered(isCovered:boolean, isFree:boolean, minimumCapacity:number){
     try{
-      const response = await axios.get(this.apiUrl+'/filter/all/?isCovered=true&isFree=true&minCapacity=10');	
+      console.log(minimumCapacity);
+      const response = await axios.get(this.apiUrl+'/filter/all/?isCovered='+ isCovered+'&isFree='+isFree+'&minCapacity='+minimumCapacity);	  
+         
       return response.data;
     }
     catch(error){

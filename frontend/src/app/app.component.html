@@ -7,7 +7,9 @@
         <h1 class="text-primary">Welkom bij ParkMyBike</h1>
         <p class="lead">Vind eenvoudig een veilige plek om je fiets te parkeren!</p>
         <br>
-        <button (click)="locationsFiltered1()" class="btn btn-primary btn-lg mt-3" >Zoek een parkeerplek</button>
+        <label for="minCapacity">minimum capaciteit</label>
+        <input type="range" min="1" max="500" id="minCapacity">
+        <button (click)="locationsFiltered1(true, false, minCapacity)" class="btn btn-primary btn-lg mt-3" >Zoek een parkeerplek</button>
     </div>
     <div class="p-2">
         <app-map></app-map>
