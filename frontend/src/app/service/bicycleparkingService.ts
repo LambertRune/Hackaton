@@ -12,17 +12,11 @@ export class BicycleParkingService {
   private actionSignalUpdate = new Subject<void>();
   action$ = this.actionSignalUpdate.asObservable();
 
-  triggerMapUpdate() {
-    this.actionSignalUpdate.next();
+  triggerMapUpdate(obj: any) {
+    this.actionSignalUpdate.next(obj);
   }
-  private minCapacity: number = 0;
-  public async getMinCapacity(minCapacity:number){
-    this.minCapacity = minCapacity
-    
-  }
-  public async setminCapacity(){
-    return this.minCapacity
-  }
+  
+  
   public async getDetails(){
     try{
       const response = await axios.get(this.apiUrl+'/details/all');
