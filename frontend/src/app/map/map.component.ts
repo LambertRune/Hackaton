@@ -11,20 +11,22 @@ import { Subscription } from 'rxjs';
 
 
 )
-export class MapComponent implements AfterViewInit {
+export class MapComponent {
   private map: any;
   private subscription: Subscription;
-  public isLoading: boolean = false;
+  public isLoading: boolean;
 
   constructor(
     private bicycleParkingService: BicycleParkingService) 
     { 
+      this.isLoading = false;
       this.subscription = this.bicycleParkingService.action$.subscribe((obj:any) => {
         console.log(obj);
         this.loadDataFiltered(obj.isCovered,obj.isfree,obj.minimumCapacity);
       });
     }
   
+
   private initMap(): void {
     this.map = L.map('map', {
       center: [50.82803, 3.26487],
@@ -102,8 +104,9 @@ export class MapComponent implements AfterViewInit {
       
       this.isLoading = false;
     }
+  
     
-    ngAfterViewInit(): void {
+    ngOnInit(): void {
       this.initMap();
       this.loadData(); 
     }
