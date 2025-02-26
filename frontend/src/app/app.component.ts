@@ -30,7 +30,7 @@ export class AppComponent {
  
   }
   addroute(){
-    this.addroute();
+    this.addroute
   }
   locationsFiltered1(isCovered:boolean, isFree:boolean, minimumCapacity:number)
   {
