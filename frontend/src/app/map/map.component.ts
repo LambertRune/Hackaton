@@ -101,8 +101,8 @@ export class MapComponent {
           popupAnchor: [0, -60]
         });
 
-        L.marker([currentLocation.lat, currentLocation.lng], { icon: fromIcon }).addTo(this.map);
-        L.marker([latitude, longitude], { icon: toIcon }).addTo(this.map);
+        /*L.marker([currentLocation.lat, currentLocation.lng], { icon: fromIcon }).addTo(this.map);
+        L.marker([latitude, longitude], { icon: toIcon }).addTo(this.map);*/
 
         L.Routing.control({
           waypoints: [
