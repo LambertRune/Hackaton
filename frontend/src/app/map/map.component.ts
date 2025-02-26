@@ -104,12 +104,62 @@ export class MapComponent {
         /*L.marker([currentLocation.lat, currentLocation.lng], { icon: fromIcon }).addTo(this.map);
         L.marker([latitude, longitude], { icon: toIcon }).addTo(this.map);*/
 
+        // L.Routing.plan(
+        //   [
+        //     new L.Routing.Waypoint(L.latLng(latitude, longitude), "Bestemming", {}),
+        //     new L.Routing.Waypoint(L.latLng(currentLocation.lat, currentLocation.lng), "Uw locatie", {}),
+            
+        //   ],
+        //   { 
+        //     dragStyles:
+        //     [{color: 'red', opacity: 1, weight: 7}, {color: 'white', opacity: 0.8, weight: 4}, {color: 'orange', opacity: 1, weight: 2, dashArray: '7,12'}],
+        //     createMarker:function(i, wp, nWps){
+        //     if (i === 0) {
+        //     return L.marker(wp.latLng, {icon: fromIcon });
+        //     }
+        //     else{
+        //     return L.marker(wp.latLng, {icon: toIcon });
+        //     }
+        //   }
+        // }
+        // ).addTo(this.map);
         L.Routing.control({
           waypoints: [
             L.latLng(currentLocation.lat, currentLocation.lng),
             L.latLng(latitude, longitude)
-          ]
+          ],
+          routeWhileDragging: true,
+          lineOptions: {
+            styles: [
+              { color: 'red', opacity: 1, weight: 7 },
+              { color: 'white', opacity: 0.8, weight: 4 },
+              { color: 'orange', opacity: 1, weight: 2, dashArray: '7,12' }
+            ],
+            extendToWaypoints: true,
+            missingRouteTolerance: 1
+          },
+          plan: L.Routing.plan(
+            [
+              L.Routing.waypoint(L.latLng(currentLocation.lat, currentLocation.lng), "Uw locatie"),
+              L.Routing.waypoint(L.latLng(latitude, longitude), "Bestemming")
+            ],
+            {
+              createMarker: function (i, wp) {
+                if (i === 0) {
+                  return L.marker(wp.latLng, { icon: fromIcon });
+                } else {
+                  return L.marker(wp.latLng, { icon: toIcon });
+                }
+              }
+            }
+          ),
+          router: L.Routing.osrmv1({
+            serviceUrl: 'https://router.project-osrm.org/route/v1'
+          })
         }).addTo(this.map);
+        
+        
+
       });
       this.map.on('locationerror', () => {
         console.error('Unable to retrieve your location');
