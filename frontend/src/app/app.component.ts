@@ -29,17 +29,13 @@ export class AppComponent {
   ngOnInit() {
  
   }
-  addroute(){
-    this.addroute
+  addroute(latitude:number, longitude:number){
+    this.service.triggerRouteUpdate({latitude:latitude, longitude:longitude}); 
   }
   locationsFiltered1(isCovered:boolean, isFree:boolean, minimumCapacity:number)
-  {
-    //this.service.triggerMapUpdate();
-    // console.log( this.service.getDetailsFiltered(true, true, 10));
-    //this.service.getDetailsFiltered(isCovered, this.isfree, minimumCapacity);
+  {    
     this.service.triggerMapUpdate({isCovered:isCovered, isFree:isFree, minimumCapacity:minimumCapacity});
-    console.log("aaaaaaaa")
-    
+        
   }
   
 }
