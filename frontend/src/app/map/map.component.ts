@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs';
 export class MapComponent {
   private map: any;
   private subscription: Subscription;
+  private subscription2: Subscription;
   public isLoading: boolean;
 
   constructor(
@@ -26,6 +27,13 @@ export class MapComponent {
         console.log(obj);
         this.loadDataFiltered(obj.isCovered,obj.isfree,obj.minimumCapacity);
       });
+      this.subscription2 = this.bicycleParkingService.action2$.subscribe((obj:any) => {
+        this.addroute(obj.latitude,obj.longitude);
+      });
+      window.addEventListener('addRoute', ((e: any) => {
+        const { lat, lng } = e.detail;
+        this.addroute(lat, lng);
+      }) as EventListener);
     }
   
 
@@ -63,19 +71,49 @@ export class MapComponent {
         ${location.type ? `Type: ${location.type}<br>` : ''}
         ${location.isFree !== null ? `Free: ${location.isFree ? 'Yes' : 'No'}<br>` : ''}
         <a href="https://www.google.com/maps/dir/?api=1&destination=${location.latitude},${location.longitude}&travelmode=bicycling" target="_blank">Open google maps</a>
+        
+        <button onclick="window.dispatchEvent(new CustomEvent('addRoute', 
+          { detail: { lat: ${location.latitude}, lng: ${location.longitude} } }))">
+          Route
+        </button>
       `);
       this.markers.push(marker);
       });
       // Store the marker reference
       
     }
-    private addroute():void{
-      L.Routing.control({
-        waypoints: [
-          L.latLng(57.74, 11.94),
-          L.latLng(57.6792, 11.949)
-        ]
-      }).addTo(this.map);
+    public addroute(latitude: number, longitude: number): void {
+      console.log(latitude, longitude);
+      this.clearMarkers();
+      this.map.locate({ setView: true, maxZoom: 16 });
+      this.map.on('locationfound', (e: any) => {
+        const currentLocation = e.latlng;
+        const fromIcon = L.icon({
+          iconUrl: 'assets/person.svg',
+          iconSize: [60, 60],
+          iconAnchor: [30, 60],
+          popupAnchor: [0, -60]
+        });
+        const toIcon = L.icon({
+          iconUrl: 'assets/bikePicture.svg',
+          iconSize: [60, 60],
+          iconAnchor: [30, 60],
+          popupAnchor: [0, -60]
+        });
+
+        L.marker([currentLocation.lat, currentLocation.lng], { icon: fromIcon }).addTo(this.map);
+        L.marker([latitude, longitude], { icon: toIcon }).addTo(this.map);
+
+        L.Routing.control({
+          waypoints: [
+            L.latLng(currentLocation.lat, currentLocation.lng),
+            L.latLng(latitude, longitude)
+          ]
+        }).addTo(this.map);
+      });
+      this.map.on('locationerror', () => {
+        console.error('Unable to retrieve your location');
+      });
     }
     private async loadData(): Promise<void> {
       this.isLoading = true;
@@ -124,6 +162,12 @@ export class MapComponent {
   
     ngOnDestroy() {
       this.subscription.unsubscribe();
+      this.subscription2.unsubscribe();
+      window.removeEventListener('addRoute', ((e: any) => {
+        const { lat, lng } = e.detail;
+        this.addroute(lat, lng);
+      }) as EventListener);
+
     }
   }
   
