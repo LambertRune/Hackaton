@@ -17,11 +17,18 @@ export class AppComponent {
     constructor() {
       this.bicycleParkingService = new BicycleParkingService();
     }
-  login() {
+    loginPage() {
+      
+    }
+  login(NaamUser: string) {
+    cred = {
+      username: NaamUser,
+      password: "pass"
+    }
     this.bicycleParkingService.sendLogin(cred);
   }
 }
-const cred = {
+let cred = {
   username: "gilles",
   password: "iets"
 };

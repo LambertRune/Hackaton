@@ -28,6 +28,6 @@ export class BicycleParkingService {
       },
       body: JSON.stringify(cred),
     });
-    console.log(response.json)
+    console.log(response)
   }
 }
